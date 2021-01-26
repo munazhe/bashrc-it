@@ -1,0 +1,192 @@
+#
+# ~/.bashrc-it
+# 
+# Author: https://github.com/munazhe
+# Date: 01/26/2021
+#
+
+
+
+# Getting around quicker
+alias c=’clear’
+alias h=’history’
+alias cs=’clear;ls’
+alias meow=’cat’
+alias pd=’pwd’
+alias lsa=’ls -a’
+alias lsh=’ls -ahl’
+alias lsl=’ls -l’
+alias pd=’pwd’
+alias t=’time’
+alias k='kill'
+alias null=’/dev/null’
+alias home='cd ~'
+alias docs='cd ~/Documents'
+alias music='cd ~/Music'
+alias dl='cd ~/Music'
+alias root='cd /'
+alias dtop='cd ~/Desktop'
+alias ..='cd ..'
+alias ...='cd ..; cd ..'
+alias ....='cd ..; cd ..; cd ..'
+
+
+
+#===================================
+# Colorize your terminal
+#===================================
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias diff='diff --color=auto'
+
+
+
+# replace spaces with '_'
+
+function nowite(){
+ for file in *;
+   do
+    mv "$file" "${file/_/[[:space:]]}"
+}
+
+
+
+#===================================
+#
+# Mount remote dir 2 any location 
+# plug <remote_dir> <local_mountpoint>
+#
+#===================================
+function plug(){
+   if [[ $(sshfs -o ciphers=aes128-ctr,compression=no,auto_cache,reconnect,kernel_cache,allow_root ${1} ${2}) ]]; then
+     echo ${?}
+   fi
+}
+
+
+
+#===================================
+#   NET LINK <LOCATION>
+#
+#  --> net link <dir>    #mount dir
+#  --> net ulink <dir>   #unmount dir 
+#
+# Configs:
+
+rmt_user="<server_username>"
+host='${rmt_user}@ <server_ip>'
+
+hmm="/home/${USER}"
+rmt_music="${host}:/"
+rmt_docs="${host}:/"
+loc_music="${hmm}/Music"
+loc_docs="${hmm}/Documents"
+
+#===================================
+
+
+function net(){
+ if [ "$1" = "link" ]; then  
+   echo "link selected"
+
+   case $2 in
+    'music' )
+      plug $rmt_music $loc_music
+    ;;
+
+    'docs' )
+      plug $rmt_docs $loc_docs
+    ;;
+
+    '*' )
+      printf "[OPTIONS]:\n[1] raspi music \n[2] raspi docs "
+    ;;
+   esac
+
+
+  elif [ "$1" = ulink ]; then    
+   echo "unlink selected"
+  
+  else
+   printf "pi link music\n\npi link docs"
+ fi
+}
+
+
+
+
+
+
+
+
+
+
+
+# auto ssh
+function link(){
+ case $1 in
+  'sgp' )
+    ssh -o "compression=no" -c aes128-ctr agent1@sgp
+    ;;
+  'tky')
+    ssh -o "compression=no" -c aes128-ctr agent1@tky
+  ;;
+
+  'raspi')
+    ssh -o "compression=no" -c aes128-ctr pi@raspi
+   ;;
+
+  'pi')
+    ssh -o "compression=no" pi@raspi
+   ;;
+
+  'radio')
+    ssh -o "compression=no" -c aes128-ctr root@radio
+   ;;
+
+  '*')
+    ssh -o "compression=no" -c aes128-ctr $1
+  ;;
+
+  esac
+}
+
+export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
+export bashrc='~/.bashrc'
+export pulse_daemon="/etc/pulse/daemon.conf"
+
+alias netup='wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase <wifi_ssid> <wifi_passphrase> )'
+
+alias sync='rsync --update -vhraz --progress --ignore-existing  --human-readable $1 $2'
+alias duck='w3m duckduckgo.com'
+alias reload='source ~/.bashrc && /home/$USER/Documents/dev_stuff/configs/'
+alias maskon='sudo ifconfig wlan0 down && sudo macchanger -A wlan0 && sudo ifconfig wlan0 up'
+alias poweroff='sudo shutdown -h now'
+alias reload='source ~/.bashrc'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
