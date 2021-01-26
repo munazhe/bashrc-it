@@ -6,20 +6,21 @@
 #
 
 
-
+#===================================
 # Getting around quicker
-alias c=’clear’
-alias h=’history’
-alias cs=’clear;ls’
-alias meow=’cat’
-alias pd=’pwd’
-alias lsa=’ls -a’
-alias lsh=’ls -ahl’
-alias lsl=’ls -l’
-alias pd=’pwd’
-alias t=’time’
+#===================================
+alias c='clear'
+alias h='history'
+alias cs='clear;ls'
+alias meow='cat'
+alias pd='pwd'
+alias lsa='ls -a'
+alias lsh='ls -ahl'
+alias lsl='ls -l'
+alias pd='pwd'
+alias t='time'
 alias k='kill'
-alias null=’/dev/null’
+alias null='/dev/null'
 alias home='cd ~'
 alias docs='cd ~/Documents'
 alias music='cd ~/Music'
@@ -49,29 +50,60 @@ alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 
 
+function maskon(){
+ sudo ifconfig wlan0 down 
+ sudo macchanger -A wlan0
+ sudo ifconfig wlan0 up
+}
 
-# replace spaces with '_'
+function poweroff(){
+ sudo shutdown -h now
+}
 
-function nowite(){
- for file in *;
-   do
-    mv "$file" "${file/_/[[:space:]]}"
+function reload(){
+ source ~/.bashrc
 }
 
 
+function sync() {
+  rsync --update -vhraz --progress --ignore-existing  --human-readable $1 $2
+}
 
-#===================================
-#
-# Mount remote dir 2 any location 
-# plug <remote_dir> <local_mountpoint>
-#
-#===================================
-function plug(){
+
+function netup(){
+  read -p 'WiFi SSID: ' ssid
+  read -p 'PASSWORD: ' passphrase
+  wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase ${ssid} ${passphrase} )'
+}
+
+
+function nowite() {
+ for file in "*.${1}";
+   do
+    mv "$file" "${file/_/[[:space:]]}"
+ done
+}
+
+
+function plug() {
    if [[ $(sshfs -o ciphers=aes128-ctr,compression=no,auto_cache,reconnect,kernel_cache,allow_root ${1} ${2}) ]]; then
      echo ${?}
    fi
 }
 
+
+function link(){
+ case $1 in
+  pi)
+   ssh -o "compression=no" pi@raspi
+  ;;
+
+  *)
+    ssh -o "compression=no" -c aes128-ctr $1
+  ;;
+
+  esac
+}
 
 
 #===================================
@@ -82,40 +114,50 @@ function plug(){
 #
 # Configs:
 
-rmt_user="<server_username>"
-host='${rmt_user}@ <server_ip>'
-
+host="pi@raspi"
 hmm="/home/${USER}"
-rmt_music="${host}:/"
-rmt_docs="${host}:/"
+rmt_music="${host}:/home/pi/shared/music"
+rmt_docs="${host}:/home/pi/docs"
 loc_music="${hmm}/Music"
 loc_docs="${hmm}/Documents"
 
 #===================================
 
 
-function net(){
+function net() {
  if [ "$1" = "link" ]; then  
    echo "link selected"
 
    case $2 in
-    'music' )
+    music)
       plug $rmt_music $loc_music
     ;;
 
-    'docs' )
+    docs)
       plug $rmt_docs $loc_docs
     ;;
 
-    '*' )
+     *)
       printf "[OPTIONS]:\n[1] raspi music \n[2] raspi docs "
     ;;
    esac
 
+  elif [ "$1" = ulink ]; then 
+   case $2 in
+    music)
+      plug $rmt_music $loc_music
+    ;;
 
-  elif [ "$1" = ulink ]; then    
-   echo "unlink selected"
-  
+    docs)
+      plug $rmt_docs $loc_docs
+    ;;
+
+    *)
+      echo "unmounting all drives"
+      sudo umount ${loc_music}
+      sudo umount ${loc_docs}
+    ;;
+   esac  
   else
    printf "pi link music\n\npi link docs"
  fi
@@ -123,70 +165,6 @@ function net(){
 
 
 
-
-
-
-
-
-
-
-
-# auto ssh
-function link(){
- case $1 in
-  'sgp' )
-    ssh -o "compression=no" -c aes128-ctr agent1@sgp
-    ;;
-  'tky')
-    ssh -o "compression=no" -c aes128-ctr agent1@tky
-  ;;
-
-  'raspi')
-    ssh -o "compression=no" -c aes128-ctr pi@raspi
-   ;;
-
-  'pi')
-    ssh -o "compression=no" pi@raspi
-   ;;
-
-  'radio')
-    ssh -o "compression=no" -c aes128-ctr root@radio
-   ;;
-
-  '*')
-    ssh -o "compression=no" -c aes128-ctr $1
-  ;;
-
-  esac
-}
-
 export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
-export bashrc='~/.bashrc'
-export pulse_daemon="/etc/pulse/daemon.conf"
-
-alias netup='wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase <wifi_ssid> <wifi_passphrase> )'
-
-alias sync='rsync --update -vhraz --progress --ignore-existing  --human-readable $1 $2'
-alias duck='w3m duckduckgo.com'
-alias reload='source ~/.bashrc && /home/$USER/Documents/dev_stuff/configs/'
-alias maskon='sudo ifconfig wlan0 down && sudo macchanger -A wlan0 && sudo ifconfig wlan0 up'
-alias poweroff='sudo shutdown -h now'
-alias reload='source ~/.bashrc'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export bashrc="~/.bashrc"
+alias duck="w3m duckduckgo.com"
