@@ -1,7 +1,7 @@
 # bashrc-it
 ~/.bashrc snippets for Pi lovers, CLI monks and cypher punks...enjoy!
 
-## Dependecies:
+## Dependencies:
 * rsync >= 3.2.3
 * sshfs >= 3.7.1
 * fuse >= 3.10.1
@@ -20,40 +20,15 @@
 **coming soon...**
 
 
+#### Commands() list
 
-### `net link $dir`
+* `net`
+* `plug`
+* `maskon`
+* `power`
+* `reload`
+* `sync`
+* `netup`
+* `nowite`
+* `link` 
 
-##### Description: mounts remote network directories using `sshfs`
-
-###### How to use
-* `net link photos` 
-
-**NOTE:** `dir` make sure edit ~/.bash-it before running `net link <path>`
-
-
-
-### `nowite` *.<.mp3, .flac, txt, pdf, etc...> 
-
-##### Description: remove whitespace from files in given directory
-
-###### How to use
-* `nowite .md` 
-
-
-
-
-### 
-
-##### Description:
-
-###### How to use
-
-
-
-
-
-### 
-
-##### Description:
-
-###### How to use
