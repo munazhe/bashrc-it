@@ -26,6 +26,28 @@
 ##### Description: mounts remote network directories using `sshfs`
 
 ###### How to use
+* `net link photos` 
+
+**NOTE:** `dir` make sure edit ~/.bash-it before running `net link <path>`
+
+
+
+### `nowite` *.<.mp3, .flac, txt, pdf, etc...> 
+
+##### Description: remove whitespace from files in given directory
+
+###### How to use
+* `nowite .md` 
+
+
+
+
+### 
+
+##### Description:
+
+###### How to use
+
 
 
 

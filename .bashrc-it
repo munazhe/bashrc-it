@@ -1,0 +1,170 @@
+#
+# ~/.bashrc-it
+# 
+# Author: https://github.com/munazhe
+# Date: 01/26/2021
+#
+
+
+#===================================
+# Getting around quicker
+#===================================
+alias c='clear'
+alias h='history'
+alias cs='clear;ls'
+alias meow='cat'
+alias pd='pwd'
+alias lsa='ls -a'
+alias lsh='ls -ahl'
+alias lsl='ls -l'
+alias pd='pwd'
+alias t='time'
+alias k='kill'
+alias null='/dev/null'
+alias home='cd ~'
+alias docs='cd ~/Documents'
+alias music='cd ~/Music'
+alias dl='cd ~/Music'
+alias root='cd /'
+alias dtop='cd ~/Desktop'
+alias ..='cd ..'
+alias ...='cd ..; cd ..'
+alias ....='cd ..; cd ..; cd ..'
+
+
+
+#===================================
+# Colorize your terminal
+#===================================
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias diff='diff --color=auto'
+
+
+function maskon(){
+ sudo ifconfig wlan0 down 
+ sudo macchanger -A wlan0
+ sudo ifconfig wlan0 up
+}
+
+function poweroff(){
+ sudo shutdown -h now
+}
+
+function reload(){
+ source ~/.bashrc
+}
+
+
+function sync() {
+  rsync --update -vhraz --progress --ignore-existing  --human-readable $1 $2
+}
+
+
+function netup(){
+  read -p 'WiFi SSID: ' ssid
+  read -p 'PASSWORD: ' passphrase
+  wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase ${ssid} ${passphrase} )'
+}
+
+
+function nowite() {
+ for file in "*.${1}";
+   do
+    mv "$file" "${file/_/[[:space:]]}"
+ done
+}
+
+
+function plug() {
+   if [[ $(sshfs -o ciphers=aes128-ctr,compression=no,auto_cache,reconnect,kernel_cache,allow_root ${1} ${2}) ]]; then
+     echo ${?}
+   fi
+}
+
+
+function link(){
+ case $1 in
+  pi)
+   ssh -o "compression=no" pi@raspi
+  ;;
+
+  *)
+    ssh -o "compression=no" -c aes128-ctr $1
+  ;;
+
+  esac
+}
+
+
+#===================================
+#   NET LINK <LOCATION>
+#
+#  --> net link <dir>    #mount dir
+#  --> net ulink <dir>   #unmount dir 
+#
+# Configs:
+
+host="pi@raspi"
+hmm="/home/${USER}"
+rmt_music="${host}:/home/pi/shared/music"
+rmt_docs="${host}:/home/pi/docs"
+loc_music="${hmm}/Music"
+loc_docs="${hmm}/Documents"
+
+#===================================
+
+
+function net() {
+ if [ "$1" = "link" ]; then  
+   echo "link selected"
+
+   case $2 in
+    music)
+      plug $rmt_music $loc_music
+    ;;
+
+    docs)
+      plug $rmt_docs $loc_docs
+    ;;
+
+     *)
+      printf "[OPTIONS]:\n[1] raspi music \n[2] raspi docs "
+    ;;
+   esac
+
+  elif [ "$1" = ulink ]; then 
+   case $2 in
+    music)
+      plug $rmt_music $loc_music
+    ;;
+
+    docs)
+      plug $rmt_docs $loc_docs
+    ;;
+
+    *)
+      echo "unmounting all drives"
+      sudo umount ${loc_music}
+      sudo umount ${loc_docs}
+    ;;
+   esac  
+  else
+   printf "pi link music\n\npi link docs"
+ fi
+}
+
+
+
+export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
+export bashrc="~/.bashrc"
+alias duck="w3m duckduckgo.com"
