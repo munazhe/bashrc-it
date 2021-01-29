@@ -71,9 +71,11 @@ function sync() {
 
 
 function netup(){
-  read -p 'WiFi SSID: ' ssid
-  read -p 'PASSWORD: ' passphrase
-  wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase ${ssid} ${passphrase} )'
+ # read -p 'WiFi SSID: ' ssid
+ # read -p 'PASSWORD: ' passphrase
+ ssid="WIFI_NAME" 
+ pass_phrase="WIFI_PASSWORD"
+ wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase ${ssid} ${passphrase} )
 }
 
 
@@ -168,3 +170,15 @@ function net() {
 export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
 export bashrc="~/.bashrc"
 alias duck="w3m duckduckgo.com"
+
+
+
+function sch(){
+   local sch_term=$( echo $1 | sed 's/[[:blank:]]/*/g' | sed 's/ *$*/*/' | sed 's/$/*/') 
+   find ./ -iname $sch_term -exec cp {} $2 \;
+}
+
+
+
+
+

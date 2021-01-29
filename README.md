@@ -32,3 +32,16 @@
 * `nowite`
 * `link` 
 
+
+
+#### `sch` 
+
+**Seach and copy files with `find`**
+
+ By default the search command
+ will only search within the
+ folder you're current in
+ for instance, to search dog photo
+ with the extention '.jpg'
+ you'd type:
+ sch "*dog*.jpg" /home/user/pics
