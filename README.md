@@ -34,14 +34,34 @@
 
 
 
-#### `sch` 
+#### `fcp` 
 
 **Seach and copy files with `find`**
 
- By default the search command
+ By default the `fcp` command
  will only search within the
  folder you're current in
  for instance, to search dog photo
  with the extention '.jpg'
  you'd type:
- sch "*dog*.jpg" /home/user/pics
+ fcp "*dog*.jpg" /home/user/pics
+
+
+#### `sch`
+
+**Seach files and return their location**
+
+  By default `sch` will only serach 
+  within your current `dir` 
+  otherwise you can specify a 
+  different `dir` from the default
+  like this: 
+  `sch 'search term' ./custom_dir`
+
+  or the default: 
+  `sch 'serch term'`
+
+  NOTE: the spaces in your `$sch_term`
+        will all be replaced with wild
+        card patterns to match the 
+        the keywords more accuratly

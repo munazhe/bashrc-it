@@ -108,6 +108,30 @@ function link(){
 }
 
 
+function fcp(){
+   local sch_term=$(echo $1  | sed 's/[[:blank:]]/*/g' | sed 's/ */*/'| sed 's/[[:blank:]]*$//')
+   if [ -z "$2" ] 
+   then
+     printf "invalid param\n\n fcp 'search term' /destinaiton_folder"
+   else
+     find ./ -name $sch_term -exec cp {} $2 \;
+     echo "$?"
+  fi
+}
+
+
+function sch(){
+   if [ -z "$1" ] 
+   then
+     printf "invalid param\n\n sch 'search term'"
+   else
+     local sch_term=$(echo $1  | sed 's/[[:blank:]]/*/g' | sed 's/ */*/'| sed 's/[[:blank:]]*$//')
+     find ./ -name $sch_term ;
+     echo "$?"
+  fi
+}
+
+
 #===================================
 #   NET LINK <LOCATION>
 #
@@ -170,13 +194,6 @@ function net() {
 export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
 export bashrc="~/.bashrc"
 alias duck="w3m duckduckgo.com"
-
-
-
-function sch(){
-   local sch_term=$( echo $1 | sed 's/[[:blank:]]/*/g' | sed 's/ *$*/*/' | sed 's/$/*/') 
-   find ./ -iname $sch_term -exec cp {} $2 \;
-}
 
 
 
