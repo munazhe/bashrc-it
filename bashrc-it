@@ -97,6 +97,8 @@ function link(){
   esac
 }
 
+
+
 export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
 export bashrc="~/.bashrc"
 alias duck="w3m duckduckgo.com"

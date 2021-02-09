@@ -20,7 +20,6 @@
 
 
 #### Commands() list
-
 * `plug` ==> Mount network drives to localally (sshfs)
 * `maskon` ==> Spoof NIC MAC address on the fly (bypass fingerprinting)
 * `reload` ==> A `source ~/.bashrc` for the lazy
