@@ -6,42 +6,24 @@
 * sshfs >= 3.7.1
 * fuse >= 3.10.1
 
+## Tested on:
+  * **Distro**: Headless arch-based linux (NO GUI)
+  * **Kernel**: `5.10.10-zen1-1-zen` **arch** `x86_64`
 
 
 ## Install
 
 ### For linux
-1. `git clone https://github.com/munazhe/bashrc-it`
-2. `cd bashrc-it`
-3. `bash install`
+1. `git clone https://github.com/munazhe/bashrc-it && cd bashrc-it && cat bashrc-it > ~/.bashrc-it`
+2. `echo "source ~/.bashrc-it" >> ~/.bashrc`
 
-
-### For Mac
-**coming soon...**
 
 
 #### Commands() list
 
-* `net`
-* `plug`
-* `maskon`
-* `power`
-* `reload`
-* `sync`
-* `netup`
-* `nowite`
-* `link` 
+* `plug` ==> Mount network drives to localally (sshfs)
+* `maskon` ==> Spoof NIC MAC address on the fly (bypass fingerprinting)
+* `reload` ==> A `source ~/.bashrc` for the lazy
+* `sync` ==> Synchronize folders and network drives while skipping duplicates
+* `link` ==> Quick alias for  ssh-ing into remote server
 
-
-
-#### `sch` 
-
-**Seach and copy files with `find`**
-
- By default the search command
- will only search within the
- folder you're current in
- for instance, to search dog photo
- with the extention '.jpg'
- you'd type:
- sch "*dog*.jpg" /home/user/pics

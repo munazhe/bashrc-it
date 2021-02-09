@@ -1,6 +1,5 @@
 #
 # ~/.bashrc-it
-# 
 # Author: https://github.com/munazhe
 # Date: 01/26/2021
 #
@@ -70,15 +69,6 @@ function sync() {
 }
 
 
-function netup(){
- # read -p 'WiFi SSID: ' ssid
- # read -p 'PASSWORD: ' passphrase
- ssid="WIFI_NAME" 
- pass_phrase="WIFI_PASSWORD"
- wpa_supplicant -B -i wlp2s0 -c <(wpa_passphrase ${ssid} ${passphrase} )
-}
-
-
 function nowite() {
  for file in "*.${1}";
    do
@@ -107,76 +97,9 @@ function link(){
   esac
 }
 
-
-#===================================
-#   NET LINK <LOCATION>
-#
-#  --> net link <dir>    #mount dir
-#  --> net ulink <dir>   #unmount dir 
-#
-# Configs:
-
-host="pi@raspi"
-hmm="/home/${USER}"
-rmt_music="${host}:/home/pi/shared/music"
-rmt_docs="${host}:/home/pi/docs"
-loc_music="${hmm}/Music"
-loc_docs="${hmm}/Documents"
-
-#===================================
-
-
-function net() {
- if [ "$1" = "link" ]; then  
-   echo "link selected"
-
-   case $2 in
-    music)
-      plug $rmt_music $loc_music
-    ;;
-
-    docs)
-      plug $rmt_docs $loc_docs
-    ;;
-
-     *)
-      printf "[OPTIONS]:\n[1] raspi music \n[2] raspi docs "
-    ;;
-   esac
-
-  elif [ "$1" = ulink ]; then 
-   case $2 in
-    music)
-      plug $rmt_music $loc_music
-    ;;
-
-    docs)
-      plug $rmt_docs $loc_docs
-    ;;
-
-    *)
-      echo "unmounting all drives"
-      sudo umount ${loc_music}
-      sudo umount ${loc_docs}
-    ;;
-   esac  
-  else
-   printf "pi link music\n\npi link docs"
- fi
-}
-
-
-
 export PS1="[ \[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\] ] \[$(tput sgr0)\]"
 export bashrc="~/.bashrc"
 alias duck="w3m duckduckgo.com"
-
-
-
-function sch(){
-   local sch_term=$( echo $1 | sed 's/[[:blank:]]/*/g' | sed 's/ *$*/*/' | sed 's/$/*/') 
-   find ./ -iname $sch_term -exec cp {} $2 \;
-}
 
 
 
